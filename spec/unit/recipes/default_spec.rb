@@ -7,14 +7,11 @@
 require 'spec_helper'
 
 describe 'tomcat::default' do
-  context 'When all attributes are default, on an unspecified platform' do
-    let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
-      runner.converge(described_recipe)
-    end
-
-    it 'converges successfully' do
-      expect { chef_run }.to_not raise_error
-    end
+  describe command('curl http://localhost:8080') do
+    its(:stdout) {should match /Tomcat/ }
   end
+  describe package('default-jdk') do
+    it { should be_installed }
+  end
+
 end
